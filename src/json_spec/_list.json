@@ -1,0 +1,31 @@
+{
+  "paging": {
+    "page": {
+      "default": 1
+    },
+    "size": {
+      "default": 10
+    }
+  },
+  "keys": {
+    "aux": [
+      "order",
+      "order_by",
+      "sort",
+      "page",
+      "size"
+    ]
+  },
+  "calc": {
+    "total_pages": {
+      "python": "({page}-1)*{size}"
+    },
+    "next_page": {
+      "python": "{page}+1"
+    },
+    "offset": {
+      "python": "math.ceil({total}/{size})"
+    }
+  }
+}
+
