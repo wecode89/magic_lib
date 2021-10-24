@@ -11,8 +11,8 @@ class TestFilter(unittest.TestCase):
             "p1": "v1",
             "p2": "v2",
         }
-        builder = PagingBuilder(path=path, params=params, segment=10,
-                 page=5, size=10, total=350)
+        builder = PagingBuilder(path=path, params=params, segment_size=10,
+                                page=5, size=10, total=350)
         _json = builder.build()
 
         print(_json)

@@ -70,11 +70,9 @@ class Segment:
 
 class PagingBuilder:
 
-    def __init__(self, path=None, params={}, segment=10,
-                 page=1, size=10, total=0):
+    def __init__(self, path=None, params={}, page=1, size=10, total=0):
         self.path = path
         self.params = params
-        self.segment = segment
 
         self.page = page
         self.size = size
