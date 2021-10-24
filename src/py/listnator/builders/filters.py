@@ -1,28 +1,6 @@
 import copy
-from py_spec.url import UrlModel, UrlBuilder
-
-
-class FilterItem:
-    def __init__(self, key=None, label=None, choices=None):
-        """
-        :param key:
-        :param label:
-        :param choices:
-                [{"label": 10 "value: 10},
-                 {"label": 20 "value": 20}]
-        """
-        self.key = key
-        self.label = label
-        self.choices = choices
-
-    def get(self):
-        data = {
-            'key': self.key,
-            'label': self.label,
-            'choices': self.choices
-        }
-        return data
-
+from py.listnator.helpers.models import Url
+from py.listnator.builders.url import UrlBuilder
 
 
 class FilterBuilder:
@@ -51,7 +29,7 @@ class FilterBuilder:
                 # get url
                 label = choice['label']
                 value = choice['value']
-                url = self.url_builder.get_url(self, key=key, val=value, reset={'page': 1})
+                url = self.url_builder.build(self, key=key, val=value, reset={'page': 1})
 
                 # selected
                 selected = False
@@ -59,8 +37,8 @@ class FilterBuilder:
                     selected = True
 
                 # fill
-                choice['url'] = UrlModel(url, label, selected=selected).get()
+                choice['url'] = Url(url, label, selected=selected).get()
 
-        filled = [x.get() for x in filled]
+        filled = [x.to_json() for x in filled]
         return filled
 

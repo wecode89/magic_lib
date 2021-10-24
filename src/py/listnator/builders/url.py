@@ -1,18 +1,5 @@
-class UrlModel:
-    def __init__(self, link, label, selected=False, active=True):
-        self.link = link
-        self.label = str(label)
-        self.selected = selected
-        self.active = active
+import copy
 
-    def get(self):
-        link = {
-            'link': link,
-            'label': label,
-            'selected': self.selected,
-            'active': active
-        }
-        return link
 
 class UrlBuilder:
     aux_keys = ['page', 'size', 'order', 'order_by', 'sort', 'sort_by']
@@ -28,7 +15,7 @@ class UrlBuilder:
     def _clean_filters(self):
         # remove aux keys from filters
         filters = copy.copy(self.filters)
-        for k in aux_keys:
+        for k in self.aux_keys:
             if k in filters:
                 del filters[k]
         return filters
@@ -43,6 +30,8 @@ class UrlBuilder:
             filters[k] = v
 
         # create url
-        url = url + "?"
+        url = self.url + "?"
         url = url + '&'.join(["{}={}".format(k, v) for k, v in filters.items()])
         return url
+
+

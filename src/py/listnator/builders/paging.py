@@ -1,23 +1,5 @@
-import math
-import copy
-from py_spec._list.link import Link
-
-class PagingModel:
-    def __init__(self, urls=None, total=None, pages=None, offset=None):
-        self.urls = urls
-        self.total = total
-        self.pages = pages
-        self.offset = offset
-        self.url_builder = UrlBuilder(url=self.url, filters=self.filters)
-
-    def get(self):
-        data = {
-            'urls': urls,
-            'total': total,
-            'pages': pages,
-            'offset': offset
-        }
-        return data
+from py.listnator.helpers.models import Url, Paging
+from py.listnator.builders.url import UrlBuilder
 
 
 class PagingBuilder:
@@ -34,6 +16,8 @@ class PagingBuilder:
 
         self.offset = offset = (self.page - 1) * self.size
         self.pages = self.total / self.size
+
+        self.url_builder = UrlBuilder(url=self.url, filters=self.filters)
 
     def _get_visible(self):
         # vars
@@ -76,21 +60,23 @@ class PagingBuilder:
         visible = self._get_visible()
         for page in visible:
             # url
-            url = self.url_builder.get_url(self, key=page, val=page, reset={'page': num})
+            url = self.url_builder.build(self.url, key=page, val=page, reset={'page': page})
 
             # selected
             selected = False
-            if page == curr:
+            if page == self.page:
                 selected = True
 
             # add to list
-            model = UrlModel(url, page, selected=selected).get()
+            model = Url(url, page, selected=selected)
             urls.append(model)
+        return urls
 
     def build(self):
         url = self._get_urls()
-        model = PagingModel(urls=url, total=self.total, pages=self.pages, offset=self.offset).get()
-        return model
+        paging = Paging(urls=url, total=self.total, pages=self.pages, offset=self.offset)
+        data = paging.to_json()
+        return data
 
 
 
