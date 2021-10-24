@@ -39,7 +39,7 @@ class Segment:
         end_inclusive = self.page + self.partition_size
 
         # form
-        following = [i for i in range(start, end_inclusive + 1) if i <= self.pages]
+        following = [i for i in range(start_inclusive, end_inclusive + 1) if i <= self.pages]
         return following
 
     def _balance_left(self, left, right, partition_size=None):
