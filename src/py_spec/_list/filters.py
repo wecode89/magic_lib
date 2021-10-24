@@ -1,35 +1,55 @@
+import copy
+from py_spec.url import UrlModel, UrlBuilder
+
 class FilterModel:
-    def __init__(self, filter_options=None, filter_params=None):
+    def __init__(self, key=None, choices=None):
+        pass
+
+
+class FilterBuilder:
+
+    def __init__(self, config=None, url=None, filters=None):
         """
-        :param filter_options:
+        :param options:
         [
             {
                 "key": "price",
-                "options": [
+                "choices": [
                    {"label": 10
                     "value: 10},
                    {"label": 20
                     "value": 20},
                 ]
-            },
-            {
-                "key": "distance",
-                "options": [
-                   {"label": "10 Miles"
-                    "value: 10},
-                   {"label": "20 Miles"
-                    "value:: 20},
-                ]
-            },
+            }
         ]
         """
-        self.filter_options = filter_options
+        self.config = config
+        self.filters = filters
+        self.url = url
+        self.url_builder = UrlBuilder(url=self.url, filters=self.filters)
 
-    def get_json(self):
-        for row in filter_options():
-            key = row['key']
-            options = row['options']
-            for option in options:
-                label = options['label']
-                value = options['value']
-                Link.get_link(self, url=url, filters=filters, key=num, val=num)
+    def build(self):
+        # copy config
+        enriched = copy.copy(config)
+
+        # iter filter
+        for row in enriched:
+            key, choices = row['key'], row['choices']
+
+            # iter choices
+            for choice in choices:
+                # get url
+                label = choice['label']
+                value = choice['value']
+                url = self.url_builder.get_url(self, key=key, val=value, reset={'page': 1})
+
+                # selected
+                selected = False
+                if key in self.filters and str(self.filters[key]) == str(value):
+                    selected = True
+
+                # enrich
+                choice['url'] = UrlModel(url, label, selected=selected).get()
+
+        return enriched
+
