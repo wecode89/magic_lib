@@ -16,6 +16,7 @@ class TestFilter(unittest.TestCase):
         _json = builder.build()
 
         print(_json)
+        self.assertTrue(False)
 
 
 if __name__ == '__main__':
