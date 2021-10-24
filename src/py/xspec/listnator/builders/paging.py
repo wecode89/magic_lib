@@ -23,7 +23,7 @@ class Segment:
     def _get_leading(self):
         # start
         start = self.page - self.partition_size
-        if start < 0:
+        if start <= 0:
             start = 1
 
         # end
@@ -36,20 +36,17 @@ class Segment:
     def _get_following(self):
         # start
         start = self.page + 1
-        if start > self.pages:
-            start = self.pages
 
         # end
-        end = start + self.partition_size + 1
-        if end > self.pages:
-            end = self.pages + 1
+        end = start + self.partition_size
 
-        following = [i for i in range(start, end)]
+        # form
+        following = [i for i in range(start, end) if i <= self.pages]
         return following
 
     def _balance_left(self, left, right, partition_size=None):
-        diff = (len(left) + 1) - partition_size
-        if diff > 0:
+        diff = partition_size - (len(left) + 1)
+        if diff > 0 and right:
             while diff > 0:
                 last = right[-1]
                 _next = last + 1
@@ -58,11 +55,12 @@ class Segment:
                 diff = diff - 1
 
     def _balance_right(self, left, right, partition_size=None):
-        diff = len(right) + 1 - partition_size
-        if diff > 0:
+        diff = partition_size - (len(right) + 1)
+        if diff > 0 and left:
             while diff > 0:
                 first = left[0]
                 _previous = first - 1
+
                 if _previous > 0:
                     left.insert(0, _previous)
                 diff = diff - 1

@@ -23,9 +23,13 @@ class TestFilter(unittest.TestCase):
             "p2": "v2",
         }
         builder = FilterBuilder(path=path, params=params, filters=filters)
-        _json = builder.build()
+        filters = builder.build()
+        self.assertTrue(isinstance(filters, list))
 
-        print(_json)
+        for _filter in filters:
+            self.assertTrue(isinstance(_filter, dict))
+            for choice in _filter['choices']:
+                self.assertTrue('url' in choice)
 
 
 if __name__ == '__main__':
