@@ -60,7 +60,7 @@ class Segment:
 
     @staticmethod
     def _balance_right(left, right, partition_size=None):
-        diff = len(right) - partition_size
+        diff = (len(right) + 1) - partition_size
         if diff > 0:
             while diff > 0:
                 first = left[0]
