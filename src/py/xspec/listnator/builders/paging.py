@@ -23,14 +23,12 @@ class Segment:
     def _get_leading(self):
         # start
         start = self.page - self.partition_size
-        if start <= 0:
-            start = 1
 
         # end
         end = self.page
 
         # form
-        leading = [i for i in range(start, end)]
+        leading = [i for i in range(start, end) if i > 0]
         return leading
 
     def _get_following(self):
