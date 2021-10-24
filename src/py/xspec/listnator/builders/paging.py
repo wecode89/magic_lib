@@ -14,8 +14,8 @@ class Segment:
         leading = self._get_leading()
         following = self._get_following()
 
-        Segment._balance_left(leading, following, partition_size=self.half_segment)
-        Segment._balance_right(leading, following, partition_size=self.half_segment)
+        self._balance_left(leading, following, partition_size=self.half_segment)
+        self._balance_right(leading, following, partition_size=self.half_segment)
 
         segment = leading + [self.page] + following
         return segment
@@ -47,7 +47,6 @@ class Segment:
         following = [i for i in range(start, end)]
         return following
 
-    @staticmethod
     def _balance_left(self, left, right, partition_size=None):
         diff = len(left) - partition_size
         if diff > 0:
@@ -58,8 +57,7 @@ class Segment:
                     right.append(_next)
                 diff = diff - 1
 
-    @staticmethod
-    def _balance_right(left, right, partition_size=None):
+    def _balance_right(self, left, right, partition_size=None):
         diff = (len(right) + 1) - partition_size
         if diff > 0:
             while diff > 0:
