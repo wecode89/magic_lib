@@ -22,24 +22,24 @@ class Segment:
 
     def _get_leading(self):
         # start
-        start = self.page - self.partition_size
+        start_inclusive = self.page - self.partition_size
 
         # end
-        end = self.page
+        end_inclusive = self.page - 1
 
         # form
-        leading = [i for i in range(start, end) if i > 0]
+        leading = [i for i in range(start_inclusive, end_inclusive + 1) if i > 0]
         return leading
 
     def _get_following(self):
         # start
-        start = self.page + 1
+        start_inclusive = self.page + 1
 
         # end
-        end = start + self.partition_size
+        end_inclusive = self.page + self.partition_size
 
         # form
-        following = [i for i in range(start, end) if i <= self.pages]
+        following = [i for i in range(start, end_inclusive + 1) if i <= self.pages]
         return following
 
     def _balance_left(self, left, right, partition_size=None):
