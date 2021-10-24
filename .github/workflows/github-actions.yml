@@ -13,5 +13,5 @@ jobs:
         run: |
           PWD=$(pwd)
           export PYTHONPATH=$PWD/src/py:$PWD/tests:PYTHONPATH
-          echo PYTHONPATH
+          echo $PYTHONPATH
           python -m unittest discover
