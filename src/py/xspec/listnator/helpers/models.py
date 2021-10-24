@@ -1,4 +1,4 @@
-from py.xspec.listnator.helpers.encode import JsonBase
+from xspec.listnator.helpers.encode import JsonBase
 
 
 class Url(JsonBase):
@@ -10,9 +10,10 @@ class Url(JsonBase):
 
 
 class Choice(JsonBase):
-    def __init__(self, label, choice):
+    def __init__(self, label=None, value=None, url=None):
         self.label = label
-        self.choice = choice
+        self.value = value
+        self.url = url
 
 
 class Filter(JsonBase):

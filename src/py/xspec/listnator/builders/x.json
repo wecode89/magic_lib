@@ -1,0 +1,79 @@
+{
+  'urls': [
+    {
+      'url': '/api/v1/path?page=1&p1=v1&p2=v2&1=1',
+      'label': '1',
+      'selected': False,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=2&p1=v1&p2=v2&2=2',
+      'label': '2',
+      'selected': False,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=3&p1=v1&p2=v2&3=3',
+      'label': '3',
+      'selected': False,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=4&p1=v1&p2=v2&4=4',
+      'label': '4',
+      'selected': False,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=5&p1=v1&p2=v2&5=5',
+      'label': '5',
+      'selected': True,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=6&p1=v1&p2=v2&6=6',
+      'label': '6',
+      'selected': False,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=7&p1=v1&p2=v2&7=7',
+      'label': '7',
+      'selected': False,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=8&p1=v1&p2=v2&8=8',
+      'label': '8',
+      'selected': False,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=9&p1=v1&p2=v2&9=9',
+      'label': '9',
+      'selected': False,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=10&p1=v1&p2=v2&10=10',
+      'label': '10',
+      'selected': False,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=11&p1=v1&p2=v2&11=11',
+      'label': '11',
+      'selected': False,
+      'active': True
+    },
+    {
+      'url': '/api/v1/path?page=12&p1=v1&p2=v2&12=12',
+      'label': '12',
+      'selected': False,
+      'active': True
+    }
+  ],
+  'total': 350,
+  'pages': 35.0,
+  'offset': 40
+}

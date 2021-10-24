@@ -1,3 +1,4 @@
+import math
 from xspec.listnator.helpers.models import Url, Paging
 from xspec.listnator.builders.url import UrlBuilder
 
@@ -24,28 +25,29 @@ class PagingBuilder:
         previous, next = [], []
         curr = self.page
         end = self.pages
+        half_segment = int(math.floor(self.segment/2))
 
         # previous segment
-        for i in range(curr - int(self.segment / 2), curr):
+        for i in range(curr - half_segment, curr):
             if i > 0:
                 previous.append(i)
 
         # next segment
-        for i in range(curr + 1, curr + self.segment/ 2 + 1):
+        for i in range(curr + 1, curr + half_segment + 1):
             if i <= end:
                 next.append(i)
 
         # if previous segment is too short, expand next segment
-        if len(previous) < self.segment / 2:
-            diff = self.segment / 2 - len(previous)
-            for i in range(curr + self.segment / 2 + 1, curr + self.segment / 2 + 1 + diff + 1):
+        if len(previous) < half_segment:
+            diff = half_segment - len(previous)
+            for i in range(curr + half_segment + 1, curr + half_segment + 1 + diff + 1):
                 if i <= end and i not in next:
                     next.append(i)
 
         # if next segment is too short, expand previous segment
-        if len(next) < self.segment / 2:
-            diff = self.segment / 2 - len(next)
-            for i in range(curr - int(self.segment / 2) - diff, curr - int(self.segment / 2) + 1):
+        if len(next) < half_segment:
+            diff = half_segment - len(next)
+            for i in range(curr - half_segment - diff, curr - half_segment + 1):
                 if i > 0 and i not in previous:
                     previous.append(i)
 
@@ -60,7 +62,7 @@ class PagingBuilder:
         visible = self._get_visible()
         for page in visible:
             # url
-            url_string = self.url_builder.build(self.path, key=page, val=page, reset={'page': page})
+            url_string = self.url_builder.build(key=page, val=page, reset={'page': page})
 
             # selected
             selected = False

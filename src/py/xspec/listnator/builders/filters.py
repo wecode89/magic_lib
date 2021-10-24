@@ -17,13 +17,13 @@ class FilterBuilder:
 
         # iter filter
         for _filter in filters:
-            key, choices = _filter['key'], _filter['choices']
+            key, choices = _filter.key, _filter.choices
 
             # iter choices
             for choice in choices:
                 # get url
-                label, value = choice['label'], choice['value']
-                url_string = self.url_builder.build(self, key=key, val=value, reset={'page': 1})
+                label, value = choice.label, choice.value
+                url_string = self.url_builder.build(key=key, val=value, reset={'page': 1})
 
                 # selected
                 selected = False
@@ -32,7 +32,7 @@ class FilterBuilder:
 
                 # fill
                 url = Url(url_string, label, selected=selected)
-                choice['url'] = url.to_json()
+                choice.url = url
 
         enriched = [_filter.to_json() for _filter in filters]
         return enriched
