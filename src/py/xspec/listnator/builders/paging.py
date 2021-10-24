@@ -3,6 +3,73 @@ from xspec.listnator.helpers.models import Url, Paging
 from xspec.listnator.builders.url import UrlBuilder
 
 
+class Segment:
+    def __init__(self, page=1, pages=0, size=10):
+        self.page = page
+        self.pages = pages
+        self.size = size
+        self.half_segment = math.floor(size/2)
+
+    def get(self):
+        leading = self._get_leading()
+        following = self._get_following()
+
+        Segment._balance_left(leading, following, partition_size=self.half_segment)
+        Segment._balance_right(leading, following, partition_size=self.half_segment)
+
+        segment = leading + [self.page] + following
+        return segment
+
+    def _get_leading(self):
+        # start
+        start = self.page - self.half_segment
+        if start < 0:
+            start = 1
+
+        # end
+        end = self.page
+
+        # form
+        leading = [i for i in range(start, end)]
+        return leading
+
+    def _get_following(self):
+        # start
+        start = self.page + 1
+        if start > self.pages:
+            start = self.pages
+
+        # end
+        end = start + self.half_segment + 1
+        if end > self.pages:
+            end = self.pages + 1
+
+        following = [i for i in range(start, end)]
+        return following
+
+    @staticmethod
+    def _balance_left(self, left, right, partition_size=None):
+        diff = len(left) - partition_size
+        if diff > 0:
+            while diff > 0:
+                last = right[-1]
+                _next = last + 1
+                if _next <= self.pages:
+                    right.append(_next)
+                diff = diff - 1
+
+    @staticmethod
+    def _balance_right(left, right, partition_size=None):
+        diff = len(right) - partition_size
+        if diff > 0:
+            while diff > 0:
+                first = left[0]
+                _previous = first - 1
+                if _previous > 0:
+                    left.insert(0, _previous)
+                diff = diff - 1
+
+
 class PagingBuilder:
 
     def __init__(self, path=None, params={}, segment=10,
@@ -20,47 +87,12 @@ class PagingBuilder:
 
         self.url_builder = UrlBuilder(path=self.path, params=self.params)
 
-    def _get_visible(self):
-        # vars
-        previous, next = [], []
-        curr = self.page
-        end = self.pages
-        half_segment = int(math.floor(self.segment/2))
-
-        # previous segment
-        for i in range(curr - half_segment, curr):
-            if i > 0:
-                previous.append(i)
-
-        # next segment
-        for i in range(curr + 1, curr + half_segment + 1):
-            if i <= end:
-                next.append(i)
-
-        # if previous segment is too short, expand next segment
-        if len(previous) < half_segment:
-            diff = half_segment - len(previous)
-            for i in range(curr + half_segment + 1, curr + half_segment + 1 + diff + 1):
-                if i <= end and i not in next:
-                    next.append(i)
-
-        # if next segment is too short, expand previous segment
-        if len(next) < half_segment:
-            diff = half_segment - len(next)
-            for i in range(curr - half_segment - diff, curr - half_segment + 1):
-                if i > 0 and i not in previous:
-                    previous.append(i)
-
-        # merge
-        visible = previous + [curr] + next
-        return visible
-
     def _get_urls(self):
         # get links
         urls = []
 
-        visible = self._get_visible()
-        for page in visible:
+        segment = Segment(page=self.page, pages=self.pages, size=self.size).get()
+        for page in segment:
             # url
             url_string = self.url_builder.build(key=page, val=page, reset={'page': page})
 
