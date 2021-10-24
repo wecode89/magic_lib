@@ -1,23 +1,23 @@
-from py.listnator.helpers.models import Url, Paging
-from py.listnator.builders.url import UrlBuilder
+from xspec.listnator.helpers.models import Url, Paging
+from xspec.listnator.builders.url import UrlBuilder
 
 
 class PagingBuilder:
 
-    def __init__(self, url=None, filters={}, segment=10,
+    def __init__(self, path=None, params={}, segment=10,
                  page=1, size=10, total=0):
-        self.url = url
-        self.filters = filters
+        self.path = path
+        self.params = params
         self.segment = segment
 
         self.page = page
         self.size = size
         self.total = total
 
-        self.offset = offset = (self.page - 1) * self.size
+        self.offset = (self.page - 1) * self.size
         self.pages = self.total / self.size
 
-        self.url_builder = UrlBuilder(url=self.url, filters=self.filters)
+        self.url_builder = UrlBuilder(path=self.path, params=self.params)
 
     def _get_visible(self):
         # vars
@@ -60,7 +60,7 @@ class PagingBuilder:
         visible = self._get_visible()
         for page in visible:
             # url
-            url = self.url_builder.build(self.url, key=page, val=page, reset={'page': page})
+            url_string = self.url_builder.build(self.path, key=page, val=page, reset={'page': page})
 
             # selected
             selected = False
@@ -68,13 +68,13 @@ class PagingBuilder:
                 selected = True
 
             # add to list
-            model = Url(url, page, selected=selected)
-            urls.append(model)
+            url = Url(url_string, page, selected=selected)
+            urls.append(url)
         return urls
 
     def build(self):
-        url = self._get_urls()
-        paging = Paging(urls=url, total=self.total, pages=self.pages, offset=self.offset)
+        urls = self._get_urls()
+        paging = Paging(urls=urls, total=self.total, pages=self.pages, offset=self.offset)
         data = paging.to_json()
         return data
 

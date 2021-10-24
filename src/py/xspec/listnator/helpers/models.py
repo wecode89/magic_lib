@@ -1,4 +1,4 @@
-from py.listnator.helpers.encode import JsonBase
+from py.xspec.listnator.helpers.encode import JsonBase
 
 
 class Url(JsonBase):
@@ -9,13 +9,13 @@ class Url(JsonBase):
         self.active = active
 
 
-class FilterItemChoice(JsonBase):
+class Choice(JsonBase):
     def __init__(self, label, choice):
         self.label = label
         self.choice = choice
 
 
-class FilterItem(JsonBase):
+class Filter(JsonBase):
     def __init__(self, key, label, choices):
         """
         :param key:
@@ -39,10 +39,10 @@ class Paging(JsonBase):
 
 if __name__ == '__main__':
     # demo
-    c1 = FilterItemChoice('c1', 'v1')
-    c2 = FilterItemChoice('c2', 'vv')
+    c1 = Choice('c1', 'v1')
+    c2 = Choice('c2', 'vv')
     _choices = [c1, c2]
 
-    item = FilterItem('k', 'v', _choices)
+    item = Filter('k', 'v', _choices)
     print(item.to_json())
     print(type(item.to_json()))
