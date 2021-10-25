@@ -1,4 +1,4 @@
-from xspec.listnator.helpers.encode import JsonBase
+from magic_lib.listnator.helpers.encode import JsonBase
 
 
 class Url(JsonBase):
@@ -31,11 +31,13 @@ class Filter(JsonBase):
 
 
 class Paging(JsonBase):
-    def __init__(self, urls=None, total=None, pages=None, offset=None):
+    def __init__(self, urls=None, total=None, page=None, pages=None, offset=None, size=None):
         self.urls = urls
         self.total = total
+        self.page = page
         self.pages = pages
         self.offset = offset
+        self.size = size
 
 
 if __name__ == '__main__':

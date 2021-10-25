@@ -4,7 +4,7 @@ import copy
 class UrlBuilder:
     ignore_keys = ['page', 'size', 'order', 'order_by', 'sort', 'sort_by']
 
-    def __init__(self, path=None, params=None, ignore_keys=None):
+    def __init__(self, path=None, params=None, ignore_keys=None, clean_params=True):
         # path
         self.path = path
 
@@ -12,7 +12,8 @@ class UrlBuilder:
         self.params = params
         if not self.params:
             self.params = {}
-        self._clean_params()
+        if clean_params:
+            self.params = UrlBuilder.clean_params(self.params)
 
         # ignore_keys
         self.ignore_keys = ignore_keys
@@ -24,12 +25,17 @@ class UrlBuilder:
         assert (isinstance(self.params, dict))
         assert (isinstance(self.ignore_keys, list))
 
-    def _clean_params(self):
+    @staticmethod
+    def clean_params(params):
         # remove aux keys from filters
-        params = copy.copy(self.params)
-        for k in self.ignore_keys:
+        if not params:
+            params = {}
+
+        params = copy.copy(params)
+        for k in UrlBuilder.ignore_keys:
             if k in params:
                 del params[k]
+        return params
 
     def build(self, key=None, val=None, reset={'page': 1}):
         # copy and overwrite filter

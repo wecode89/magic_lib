@@ -1,6 +1,6 @@
 import copy
-from xspec.listnator.helpers.models import Url
-from xspec.listnator.builders.url import UrlBuilder
+from magic_lib.listnator.helpers.models import Url
+from magic_lib.listnator.builders.url import UrlBuilder
 
 
 class FilterBuilder:

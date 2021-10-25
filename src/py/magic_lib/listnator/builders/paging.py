@@ -1,6 +1,6 @@
 import math
-from xspec.listnator.helpers.models import Url, Paging
-from xspec.listnator.builders.url import UrlBuilder
+from magic_lib.listnator.helpers.models import Url, Paging
+from magic_lib.listnator.builders.url import UrlBuilder
 
 
 class Segment:
@@ -68,16 +68,14 @@ class PagingBuilder:
 
     def __init__(self, path=None, params={}, page=1, size=10, total=0):
         self.path = path
-        self.params = params
-
         self.page = page
         self.size = size
+
         self.total = total
-
         self.offset = (self.page - 1) * self.size
-        self.pages = self.total / self.size
+        self.pages = math.ceil(self.total / self.size)
 
-        self.url_builder = UrlBuilder(path=self.path, params=self.params)
+        self.url_builder = UrlBuilder(path=self.path, params=params, clean_params=False)
 
     def _get_urls(self):
         # get links
@@ -86,7 +84,7 @@ class PagingBuilder:
         segment = Segment(page=self.page, pages=self.pages, size=self.size).get()
         for page in segment:
             # url
-            url_string = self.url_builder.build(key=page, val=page, reset={'page': page})
+            url_string = self.url_builder.build(key='page', val=page, reset={})
 
             # selected
             selected = False
@@ -100,7 +98,8 @@ class PagingBuilder:
 
     def build(self):
         urls = self._get_urls()
-        paging = Paging(urls=urls, total=self.total, pages=self.pages, offset=self.offset)
+        paging = Paging(urls=urls, total=self.total, page=self.page, pages=self.pages,
+                        offset=self.offset, size=self.size)
         data = paging.to_json()
         return data
 

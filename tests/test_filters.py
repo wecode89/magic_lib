@@ -1,6 +1,6 @@
 import unittest
-from xspec.listnator.helpers.models import Choice, Filter
-from xspec.listnator.builders.filters import FilterBuilder
+from magic_lib.listnator.helpers.models import Choice, Filter
+from magic_lib.listnator.builders.filters import FilterBuilder
 
 
 class TestFilter(unittest.TestCase):

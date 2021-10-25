@@ -1,6 +1,6 @@
 import unittest
 from ddt import ddt, data, unpack
-from xspec.listnator.builders.paging import PagingBuilder, Segment
+from magic_lib.listnator.builders.paging import PagingBuilder, Segment
 
 
 @ddt
