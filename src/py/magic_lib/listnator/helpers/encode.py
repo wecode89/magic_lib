@@ -3,6 +3,14 @@ import json
 
 class EncoderBase(json.JSONEncoder):
     def default(self, o):
+        if isinstance(o, bool):
+            return super().default(o)
+        if isinstance(o, int):
+            return super().default(o)
+        if isinstance(o, float):
+            return super().default(o)
+        if isinstance(o, str):
+            return super().default(o)
         return o.__dict__
 
 
