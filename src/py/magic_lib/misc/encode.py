@@ -13,5 +13,6 @@ class JsonBase:
     def to_json(self, encoder=EncoderBase):
         # dump data
         string = json.dumps(self, cls=encoder)
+
         data = json.loads(string)
         return data
