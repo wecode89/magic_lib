@@ -1,3 +1,4 @@
+import copy
 import math
 from magic_lib.listnator.helpers.models import Url, Paging
 from magic_lib.listnator.builders.url import UrlBuilder
@@ -68,37 +69,37 @@ class PagingBuilder:
 
     def __init__(self, path=None, params={}, page=1, size=10, total=0):
         self.path = path
+        self.params = params
+
         self.page = page
         self.size = size
-
         self.total = total
+
         self.offset = (self.page - 1) * self.size
         self.pages = math.ceil(self.total / self.size)
 
-        self.url_builder = UrlBuilder(path=self.path, params=params, clean_params=False)
-
-    def _get_urls(self):
-        # get links
-        urls = []
-
+    def build(self):
+        # get pagination segment
         segment = Segment(page=self.page, pages=self.pages, size=self.size).get()
-        for page in segment:
-            # url
-            url_string = self.url_builder.build(key='page', val=page, reset={})
 
+        # build url objects
+        url_objects = []
+        for page in segment:
             # selected
             selected = False
             if page == self.page:
                 selected = True
 
-            # add to list
-            url = Url(url_string, page, selected=selected)
-            urls.append(url)
-        return urls
+            # params
+            params = copy.copy(self.params)
+            params['page'] = page
 
-    def build(self):
-        urls = self._get_urls()
-        paging = Paging(urls=urls, total=self.total, page=self.page, pages=self.pages,
+            # url object
+            url_builder = UrlBuilder(label=self.page, path=self.path, params=params, selected=selected)
+            url_objects.append(url_builder.build())
+
+        # paging object
+        paging = Paging(urls=url_objects, total=self.total, page=self.page, pages=self.pages,
                         offset=self.offset, size=self.size)
         data = paging.to_json()
         return data
