@@ -1,4 +1,4 @@
-from magic_lib.listnator.helpers.encode import JsonBase
+from magic_lib.misc.encode import JsonBase
 
 
 class Url(JsonBase):
