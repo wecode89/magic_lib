@@ -11,8 +11,6 @@ class EncoderBase(json.JSONEncoder):
             return super().default(o)
         elif isinstance(o, str):
             return super().default(o)
-        elif hasattr(o, 'to_json'):
-            return o.to_json()
         return o.__dict__
 
 
