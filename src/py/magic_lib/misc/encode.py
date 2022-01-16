@@ -5,12 +5,14 @@ class EncoderBase(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, bool):
             return super().default(o)
-        if isinstance(o, int):
+        elif isinstance(o, int):
             return super().default(o)
-        if isinstance(o, float):
+        elif isinstance(o, float):
             return super().default(o)
-        if isinstance(o, str):
+        elif isinstance(o, str):
             return super().default(o)
+        elif hasattr(o, 'to_json'):
+            return o.to_json()
         return o.__dict__
 
 
