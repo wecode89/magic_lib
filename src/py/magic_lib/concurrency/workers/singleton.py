@@ -1,7 +1,11 @@
 import concurrent.futures
 import os
 from tqdm import tqdm
+from magic_lib.misc.log import get_logger
 from magic_lib.concurrency.workers.template import TemplateWorkerDispatcher
+
+
+logger = get_logger(os.path.basename(__file__), level=os.environ.get('LOG_LEVEL', 'DEBUG'))
 
 
 class SingletonWorkerDispatcher(TemplateWorkerDispatcher):
@@ -19,6 +23,7 @@ class SingletonWorkerDispatcher(TemplateWorkerDispatcher):
 
         # sort
         worker_result = self._sort(worker_result)
+        logger.debug("worker_result---> {}".format(worker_result))
         return worker_result
 
     def _get_iters(self):
